@@ -1,0 +1,22 @@
+Before starting any coding, we need a bit of context. When a program is ran with MPI all the processes are grouped in what we call a communicator. You can see a communicator as a box grouping processes together, allowing them to communicate. Every communication is linked to a communicator, allowing the communication to reach different processes. Communications can be either of two types,
+
+- Point-to-Point : Two processes in the same communicator are going to communicate.
+- Collective : All the processes in a communicator are going to communicate together.
+
+The default communicator is called MPI_COMM_WORLD. It basically groups all the processes when the program started. If you take a look at the example below, you see a depiction of a program ran with five processes. Every process is connected and can communicate inside this communicator.
+
+            Example Communicator
+
+Process                   Can Communicate With Processes
+0                               1,2,3,4
+1                               0,2,3,4
+2                               1,0,3,4
+3                               1,2,0,4
+4                               1,2,3,0
+
+
+MPI_COMM_WORLD is not the only communicator in MPI. We can make our custom communicators as well.
+
+         Rank And Communicator Size.
+The number(total processes in a communicator) in a communicator does not change once it is created. That number is called the size of the communicator. At the same time, each process inside a communicator has a unique number/id to identify it. This id/number is called the rank of the process. In the previous example, the size of MPI_COMM_WORLD is 5. The rank of a process always ranges from 0 to  Size of communicator - 1.
+
