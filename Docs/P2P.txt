@@ -1,0 +1,35 @@
+there are two types of communications, point-to-point (that we are going to call P2P from now on), and collective. P2P communications are divided in two operations : Send and Receive, which names are pretty self-explanatory.
+
+The most basic forms of P2P communication are called blocking communications. The process sending a message will be waiting until the process receiving has finished receiving all the information. This is the easiest form of communications but not necessarily the fastest as we will see in the following lessons.
+
+Sending messages
+A send operation, sends a buffer of data of a certain type to another process. A P2P message has the following properties :
+
+- A reference to a buffer ( starting address )
+
+- A datatype   -->    ( the type of data which will be sent to other processes )
+
+- A number of elements    
+( total elements to be sent of given type. it is > 1 in case of arrays because if we want to send arrays we send multiple blocks and since we have already given the starting point/reference of the buffer to the send function, then it will send n number of element from that point so by doing this we can send arrays also )
+
+- A tag    --> The tag is a simple integer that identifies the "type" of communication ( blocking communication/non blocking communication etc.)
+
+- A destination id --> destiantion process's rank/id.
+
+- A communicator 
+( communicator's name from which the processes belongs. we can give custom communicators too but for this time we are using global communicator that contains all the processes 
+e.g MPI_COMM_WORLD )
+
+
+                                 Data Types In MPI
+
+C TYPE	MPI TYPE
+char	MPI_CHAR
+int	MPI_INT
+float	MPI_FLOAT
+double	MPI_DOUBLE
+
+
+
+Receiving messages
+The receiving of a message works in the exact same way as the send operation. However, instead of a destination id, the call will require a source id : the identification of the process from which you are waiting a message. On top of that, depending if you are using blocking or non-blocking communications, you will need additional arguments, but we will cover them in time and place. Let's have a small hands-on now.
