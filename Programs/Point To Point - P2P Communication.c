@@ -3,11 +3,35 @@
 
 int main(int argc, char **argv) 
 {
-   int ;
-   MPI_Init(&argc, &argv);
-   
-   MPI_Finalize();
+   int Rank;
+   MPI_Init(&argc, &argv); 
+   int arr[5] = { 1 , 2 , 3 , 4 , 5 } ;
+   MPI_Comm_rank(MPI_COMM_WORLD, &Rank); 
+   // An MPI function that returns current process's id/rank MPI_Comm_rank(communicator's_name, rank_variable_in_which_id_will_be_assigned)
+   // printf("I am process # %d \n",Rank) ; 
+   if( Rank == 0 )
+   {
+       MPI_Send(&arr, 5 , MPI_INT, 1 , 0 , MPI_COMM_WORLD);
+   }
+   else if( Rank == 1 )
+   {
+       int Square_Arr[5] = {0} ;
+       MPI_Recv(&Square_Arr, 5, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+       int i = 0 ;
+       printf("\nOriginal Array Received By Process # 1 \n");
+       printf("\nAfter Squaring Original Array --> ") ;
+       while( i < 5 )
+       {
+           Square_Arr[i] = Square_Arr[i] * Square_Arr[i] ;
+           printf(" %d ",Square_Arr[i]) ;
+           i++;
+       }
+       printf("\n");
+   }
+   MPI_Finalize(); 
 }
+
+   
 
 /*
 
