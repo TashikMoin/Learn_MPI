@@ -19,7 +19,6 @@ int main(int argc, char **argv)
         sleep(10) ;
         X = 10;
         MPI_Isend( &X , 1 , MPI_INT , 1 , 0 , MPI_COMM_WORLD , &Request ); 
-        printf("\nBefore MPI_Wait\n");
         printf("\n... Process # 0 has sent data and is executing the remaining code ... \n") ;
     }
     else 
@@ -29,7 +28,7 @@ int main(int argc, char **argv)
         printf("\nProcess # 1 will not wait this time because we have used aynchronous version of MPI_Send and MPI_Recv --> ISend/IRecv\n") ;
         MPI_Irecv( &X , 1 , MPI_INT , 0 , 0 , MPI_COMM_WORLD , &Request ); 
         MPI_Wait(&Request, &Status);
-        printf("\nCode After MPI_Irecv\n") ;
+        printf("\nCode After MPI_Irecv And MPI_Wait [This Comes Late Because Waiting Is Blocking]\n") ;
         printf("\nReceived Value Of X = %d\n", X) ; // if MPI_Wait wis not used then X will be 0
     } 
 
