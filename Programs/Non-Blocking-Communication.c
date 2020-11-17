@@ -1,10 +1,7 @@
-// Compile with --> mpicc -o MPI MPI.c
-// Run Executable with 3 processes ( better to use N Processes for NXN square Matrix ) --> mpirun -np 3 ./MPI
-
 #include <stdio.h>
 #include <mpi.h>
 #include<unistd.h>
-
+// run this code with 2 processes
 
 int main(int argc, char **argv) 
 {
@@ -12,23 +9,23 @@ int main(int argc, char **argv)
     int Rank , X = 0 , Y = 0 ;
     int Total_Processes;
     MPI_Request Request;
-    // MPI_Status  Status; 
-    // --> No need because we have not using MPI_Send and MPI_Recv. We can also avoid it in MPI_Send and MPI_Recv by MPI_STATUS_IGNORE.
     MPI_Comm_rank(MPI_COMM_WORLD, &Rank); 
     MPI_Comm_size(MPI_COMM_WORLD, &Total_Processes);
 
     if( Rank == 0 )
     { 
+        printf("\nProcess # 0 is busy in doing its work\n") ;
+        sleep(10) ;
         MPI_Isend( &X , 1 , MPI_INT , 1 , 0 , MPI_COMM_WORLD , &Request ); 
         printf("\n... Process # 0 has sent data and is executing the remaining code ... \n") ;
     }
     else 
     {
-        printf("\nProcess # 1 waiting for the data\n") ;
-        sleep(10) ;
+        printf("\nProcess # 1 is ready to receive data but process # 0 will take 10 seconds more to send it\n") ;
+        printf("\nProcess # 1 would have waited for 10 seconds (blocked) if we would have used MPI_Send and MPI_Recv\n") ;
+        printf("\nProcess # 1 will not wait this time because we have used aynchronous version of MPI_Send and MPI_Recv --> ISend/IRecv\n") ;
         MPI_Irecv( &X , 1 , MPI_INT , 0 , 0 , MPI_COMM_WORLD , &Request ); 
-        printf("\n... Data received by Process # 1 ...\n") ;
-        printf("\nX value in process # 1 = %d\n", X ) ;
+        printf("\nCode After MPI_Irecv\n") ;
     } 
 
     MPI_Finalize(); 
@@ -36,19 +33,14 @@ int main(int argc, char **argv)
 
 /* 
 MPI_STATUS_IGNORE -->  MPI_STATUS_IGNORE informs MPI to not fill an MPI_Status, which saves some time.
-MPI_Isend and MPI_Irecv works asynchronously which means that they do not wait for complete sending/recieving they will move ahead and
-will execute other code written after these function calls.
-
-The output of above code is,
-
-Process # 1 waiting for the data
-... Process 0 has sent data and is executing the remaining code ...
-... Data received by Process # 1 ...
-X value in process # 1 = 0
+MPI_Isend and MPI_Irecv works asynchronously which means while receiving, MPI_Irecv will not wait for other process to send it
+data but it will go ahead and execute remaining code after MPI_Irecv. It will automatically get the value when the vlaue is sent
+to it.
 
 
-The reason that MPI_Isend does not wait till the complete data transfer just like MPI_send is because we used
+
+The reason that MPI_Irecv does not wait till the complete data transfer just like MPI_recv is because we used
 MPI_Isend and MPI_Irecv and these functions are non-blocking(Asynchronous). If we would have used MPI_Send and 
-MPI_Recv here, the send will wait until X is received by process # 1 and this wait is called "blocking".
+MPI_Recv here, then MPI_recv would have waited till X is received by process # 1 and this wait is called "blocking".
 
 */
