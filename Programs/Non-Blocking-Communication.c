@@ -34,8 +34,8 @@ int main(int argc, char **argv)
 /* 
 MPI_STATUS_IGNORE -->  MPI_STATUS_IGNORE informs MPI to not fill an MPI_Status, which saves some time.
 MPI_Isend and MPI_Irecv works asynchronously which means while receiving, MPI_Irecv will not wait for other process to send it
-data but it will go ahead and execute remaining code after MPI_Irecv. It will automatically get the value when the vlaue is sent
-to it.
+data but it will go ahead and execute remaining code after MPI_Irecv. It will automatically get the value when the value is sent
+to it. we can check the value of flag variable to confirm if the value is sent or not.
 
 
 
