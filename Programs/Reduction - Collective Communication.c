@@ -43,5 +43,7 @@ int main(int argc, char **argv)
 
 /*
 int MPI_Reduce(Buffer, Result_buffer, Total_Values_Count, Datatype, Reduction_operation, Sender/Master/Root , Communicator);
+There is one more function which is "MPI_AllReduce". This function gives the final result to all the processes and not only 
+to the root/master process.
 */
 
