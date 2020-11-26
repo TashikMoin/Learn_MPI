@@ -39,10 +39,13 @@ int main(int argc, char **argv)
     using MPI_Wait(&Request, &Status); after MPI_Irecv is same as using MPI_recv (blocking) variant.
 
     it is necessary to either wait or test when using MPI_Isend and MPI_Irecv functions otherwise we will not receive the values passed
-    by other processes. If we do not wait or test, we wil get local value of the process's recieving value and not the actual passed data.
+    by other processes. If we do not wait or test, we wil get local value of the variables in that process scope and not the value that was sent.
+    
     MPI_Wait(&Request, &Status); takes the request and status objects as parameter and waits until 'that' request is finished. however,
     there is another waiting function,
     MPI_Waitany(Array_Size/Total_Requests, Array_Of_Requests[], Index_Of_Request_That_Is_Completed, Status);
+    
+    The advantage of using MPI_Wait is that we can execute code after the recv function and can wait only when we need the value from other processes.
 
     The difference is that, MPI_Wait wait for a single request to complete but ,
     let say if there are multiple sends and recieve function calls then MPI_WaitAny wait for the first request that is completed
