@@ -19,6 +19,7 @@ int main(int argc, char **argv)
         sleep(10) ;
         printf("\nProcess # 0 started sending data to process # 1\n") ;
         MPI_Send(&X, 1 , MPI_INT, 1 , 0 , MPI_COMM_WORLD);
+        // MPI_Send(&Data_Array/Buffer_Starting_Address, Total_Data , Type, To_Process_Rank , status/flag , Communicator);
         printf("\nProcess # 0 has sent the data to Process # 1 using MPI_Send and Process # 1 has received it\n") ;
     }
     else 
@@ -26,6 +27,7 @@ int main(int argc, char **argv)
         // blocking
         printf("\nProcess # 1 is ready to receive data from Process # 0 but data is not sent yet so process # 1 is blocked\n") ;
         MPI_Recv(&X, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        // MPI_Recv(&Data_Array/Buffer_Starting_Address, Total_Data , Type, From_Process_Rank , status/flag , Communicator, status_structure);
         printf("\nProcess # 1 has finally received the data \n") ;
     } 
 
